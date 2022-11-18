@@ -14,15 +14,16 @@ class MyShapeBorder extends OutlinedBorder {
   @override
   Path getOuterPath(ui.Rect rect, {ui.TextDirection? textDirection}) {
     final Size size = rect.size;
-    print(rect.top);
-    print(rect.bottom);
-    print(rect.height);
-    print(rect.width);
     final topGap = rect.top;
+    print('TOP: ${rect.top} | BOTTOM: ${rect.bottom}');
+    print('LEFT: ${rect.left} | RIGHT: ${rect.right}');
+    print('WIDTH: ${rect.width} | HEIGHT: ${rect.height}');
+
 
     final screen = MediaQueryData.fromWindow(WidgetsBinding.instance.window);
     final maxWidth = screen.size.width;
-    final maxHeight = screen.size.height;
+    print('MAX WIDTH: ${screen.size.width} | MAX HEIGHT: ${screen.size.height}');
+    print('#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#');
     int waveNumber = 10;
     if(maxWidth < 360) {
       waveNumber = 15;
@@ -34,8 +35,12 @@ class MyShapeBorder extends OutlinedBorder {
     double widthPercent = 0.8653657;
     double heightPercent = 0.04301471;
 
+    final rightBound = size.width * 0.9362788;
+    final leftBound = size.width * 0.06138107;
+    double rightSide (int i, double difference) => size.width*(0.9362788 - (i * difference));
+
     final Path path = Path();
-    path.moveTo(size.width*0.9362788,size.height*0.05588235 + topGap);
+    path.moveTo(rightBound, size.height*0.05588235 + topGap);
 
     path.cubicTo(size.width * 0.9156087, size.height * 0.05588235 + topGap, size.width * 0.8988517, size.height * 0.04666471 + topGap, size.width * 0.8988517, size.height * 0.03529412 + topGap);
     path.lineTo(size.width * 0.8871535, size.height * 0.03529412 + topGap);

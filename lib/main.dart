@@ -36,7 +36,7 @@ class ReceiptPage extends StatelessWidget {
         child: Container(
           height: 500.0,
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          // padding: const EdgeInsets.symmetric(horizontal: 10),
           color: Colors.black,
           child: Container(
             height: 500.0,
