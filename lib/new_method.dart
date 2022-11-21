@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-class MyResponsiveShapeBorder extends ShapeBorder {
+class ResponsiveShapeBorder extends ShapeBorder {
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(0);
@@ -149,15 +149,15 @@ class MyResponsiveShapeBorder extends ShapeBorder {
 
 
     path.cubicTo(
-        OX(2.79072),size.height*0.9569853 + topGap,
-        OX(2.262204),size.height*0.9604426 + topGap,
-        coordinate.width,size.height*0.9647059 + topGap,
+      OX(2.79072),size.height*0.9569853 + topGap,
+      OX(2.262204),size.height*0.9604426 + topGap,
+      coordinate.width,size.height*0.9647059 + topGap,
     );
     path.lineTo(OX(6.73696),size.height*0.9647059 + topGap);
     path.cubicTo(
-        coordinate.width,size.height*0.9537676 + topGap,
-        OX(5.63652),size.height*0.9448221 + topGap,
-        OX(7.380868),size.height*0.9441574 + topGap,
+      coordinate.width,size.height*0.9537676 + topGap,
+      OX(5.63652),size.height*0.9448221 + topGap,
+      OX(7.380868),size.height*0.9441574 + topGap,
     );
 
     path.lineTo(finish,size.height*0.9441176 + topGap);

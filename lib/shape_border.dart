@@ -81,7 +81,10 @@ class MyShapeBorder extends ShapeBorder {
     widthPercent = 0.1346332;
     heightPercent = 0.9569853;
 
-    path.cubicTo(size.width*0.08439182,size.height*0.9441176 + topGap,size.width*0.1011491,size.height*0.9533353 + topGap,size.width*0.1011491,size.height*0.9647059 + topGap,);
+    path.cubicTo(
+      size.width*0.08439182,size.height*0.9441176 + topGap,
+      size.width*0.1011491,size.height*0.9533353 + topGap,
+      size.width*0.1011491,size.height*0.9647059 + topGap,);
     path.lineTo(size.width*0.1128458,size.height*0.9647059 + topGap,);
     path.cubicTo(size.width*0.1128458,size.height*0.9604426 + topGap,size.width*0.1191297,size.height*0.9569853 + topGap,size.width*0.1268816,size.height*0.9569853 + topGap,);
 
