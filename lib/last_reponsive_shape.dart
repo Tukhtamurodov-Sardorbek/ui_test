@@ -18,7 +18,7 @@ class LastResponsiveShapeBorder extends ShapeBorder {
     final topGap = rect.top;
     final width = rect.width;
 
-    const peakWidth = 16.842736;
+    const peakWidth = 16;
     const horizontalMargin = 30.0;
     double cornerWidth = 24.807272;
 
@@ -28,7 +28,11 @@ class LastResponsiveShapeBorder extends ShapeBorder {
     final double remainedSpace = (width - 2 * cornerWidth - 2 * horizontalMargin) % peakWidth;
     cornerWidth += remainedSpace/2;
 
-    final numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalMargin) ~/ peakWidth;
+    var numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalMargin) ~/ peakWidth;
+    // var number = (width - 2 * cornerWidth - 2 * horizontalMargin) / peakWidth;
+    // if(number.ceil() - number <= 0.0001){
+    //   numberOfPeaks += 1;
+    // }
 
     final startingPoint = width - horizontalMargin;
 
@@ -78,17 +82,17 @@ class LastResponsiveShapeBorder extends ShapeBorder {
 
     for(int i = 0; i < numberOfPeaks; i++){
       path.cubicTo(
-        OX(-2.790684), size.height * heightPercent + topGap,
-        OX(-2.262204), size.height * (heightPercent - 0.00345662) + topGap,
+        OX(-0.165690657 * peakWidth), size.height * heightPercent + topGap,
+        OX(-0.134313332 * peakWidth), size.height * (heightPercent - 0.00345662) + topGap,
         coordinate.width, size.height * (heightPercent - 0.00772059) + topGap,
       );
       path.lineTo(
-        OX(-6.73696), size.height*(heightPercent - 0.00772059)+ topGap,
+        OX(-0.39999202 * peakWidth), size.height*(heightPercent - 0.00772059)+ topGap,
       );
       path.cubicTo(
         coordinate.width, size.height*(heightPercent - 0.00345662) + topGap,
-        OX(-2.262204), size.height*heightPercent + topGap,
-        OX(-2.790684), size.height*heightPercent + topGap,
+        OX(-0.134313332 * peakWidth), size.height*heightPercent + topGap,
+        OX(-0.165690657 * peakWidth), size.height*heightPercent + topGap,
       );
     }
 
@@ -106,11 +110,10 @@ class LastResponsiveShapeBorder extends ShapeBorder {
       OX(-0.297528402 * cornerWidth),size.height*0.05588235+ topGap,
     );
 
-    // path.lineTo(OX(horizontalMargin - coordinate.width),size.height*0.05588235+ topGap);
+    path.lineTo(OX(horizontalMargin - coordinate.width),size.height*0.05588235+ topGap);
 
     /// From top left to bottom left |
     path.lineTo(coordinate.width,size.height*0.9441176 + topGap);
-    // coordinate.width
 
     /// From bottom left to right ->
     heightPercent = 0.9569853;
@@ -128,22 +131,21 @@ class LastResponsiveShapeBorder extends ShapeBorder {
     );
 
     for(int i = 0; i < numberOfPeaks; i++){
-
       path.cubicTo(
-        OX(2.790684), size.height * heightPercent + topGap,
-        OX(2.262204), size.height * (heightPercent + 0.0034573) + topGap,
+        OX(0.165690657 * peakWidth), size.height * heightPercent + topGap,
+        OX(0.134313332 * peakWidth), size.height * (heightPercent + 0.0034573) + topGap,
         coordinate.width, size.height * (heightPercent + 0.0077206) + topGap,
       );
 
       path.lineTo(
-        OX(6.73696), size.height*(heightPercent + 0.0077206)+ topGap,
+        OX(0.39999202 * peakWidth), size.height*(heightPercent + 0.0077206)+ topGap,
       );
 
 
       path.cubicTo(
         coordinate.width, size.height*(heightPercent + 0.0034573) + topGap,
-        OX(2.262204), size.height*heightPercent + topGap,
-        OX(2.790684), size.height*heightPercent + topGap,
+        OX(0.134313332 * peakWidth), size.height*heightPercent + topGap,
+        OX(0.165690657 * peakWidth), size.height*heightPercent + topGap,
       );
 
     }
