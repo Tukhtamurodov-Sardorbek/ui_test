@@ -32,7 +32,7 @@ class LastResponsiveShapeBorder extends ShapeBorder {
 
     final startingPoint = width - horizontalMargin;
 
-    print('Number of peaks: $numberOfPeaks');
+    print('Number of peaks: $numberOfPeaks | CornerWidth: $cornerWidth');
 
     final Path path = Path();
     Size coordinate = Size(startingPoint, size.height*0.05588235 + topGap);
@@ -106,11 +106,11 @@ class LastResponsiveShapeBorder extends ShapeBorder {
       OX(-0.297528402 * cornerWidth),size.height*0.05588235+ topGap,
     );
 
-    path.lineTo(coordinate.width,size.height*0.05588235+ topGap);
+    // path.lineTo(OX(horizontalMargin - coordinate.width),size.height*0.05588235+ topGap);
 
     /// From top left to bottom left |
     path.lineTo(coordinate.width,size.height*0.9441176 + topGap);
-
+    // coordinate.width
 
     /// From bottom left to right ->
     heightPercent = 0.9569853;
@@ -161,10 +161,10 @@ class LastResponsiveShapeBorder extends ShapeBorder {
       OX(0.297528402 * cornerWidth),size.height*0.9441574 + topGap,
     );
 
-    path.lineTo(startingPoint,size.height*0.9441176 + topGap);
+    path.lineTo(OX(startingPoint - coordinate.width),size.height*0.9441176 + topGap);
 
     /// From bottom right to top right
-    path.lineTo(startingPoint,size.height*0.05588235 + topGap);
+    path.lineTo(coordinate.width,size.height*0.05588235 + topGap);
 
     path.close();
 
