@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-class ResponsiveShapeBorder extends ShapeBorder {
+class LastResponsiveShapeBorder extends ShapeBorder {
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(0);
@@ -17,8 +17,9 @@ class ResponsiveShapeBorder extends ShapeBorder {
     final Size size = rect.size;
     final topGap = rect.top;
     final width = rect.width;
+
     const peakWidth = 16.842736;
-    const horizontalMargin = 30;
+    const horizontalMargin = 30.0;
     double cornerWidth = 24.807272;
 
     double heightPercent = 0.04301471;
@@ -27,10 +28,11 @@ class ResponsiveShapeBorder extends ShapeBorder {
     final double remainedSpace = (width - 2 * cornerWidth - 2 * horizontalMargin) % peakWidth;
     cornerWidth += remainedSpace/2;
 
-    final numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalMargin) / peakWidth;
+    final numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalMargin) ~/ peakWidth;
 
     final startingPoint = width - horizontalMargin;
-    final leftSideBoundary = width - startingPoint;
+
+    print('Number of peaks: $numberOfPeaks');
 
     final Path path = Path();
     Size coordinate = Size(startingPoint, size.height*0.05588235 + topGap);
@@ -40,11 +42,11 @@ class ResponsiveShapeBorder extends ShapeBorder {
       final yCoordinate = coordinate.height;
 
       xCoordinate += moveBy;
-      if(xCoordinate < 0){
-        xCoordinate = 0;
-      } else if(xCoordinate > startingPoint){
-        xCoordinate = startingPoint;
-      }
+      // if(xCoordinate < 0){
+      //   xCoordinate = 0;
+      // } else if(xCoordinate > startingPoint){
+      //   xCoordinate = startingPoint;
+      // }
       coordinate = Size(xCoordinate, yCoordinate);
       return coordinate.width;
     }

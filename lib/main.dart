@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_test/responsive_shape_border.dart';
 import 'package:ui_test/shape_border.dart';
 
+import 'last_reponsive_shape.dart';
 import 'new_method.dart';
 
 void main() {
@@ -47,7 +48,7 @@ class ReceiptPage extends StatelessWidget {
             height: 500.0,
             decoration: ShapeDecoration(
               color: Colors.red,
-              shape: ResponsiveShapeBorder(),
+              shape: LastResponsiveShapeBorder(),
               shadows: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),

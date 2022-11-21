@@ -11,13 +11,6 @@ class MyResponsiveShapeBorder extends ShapeBorder {
   Path getInnerPath(ui.Rect rect, {ui.TextDirection? textDirection}) {
     return Path();
   }
-
-  // from left :0.06372046
-  // from right :0.9156087
-  // total : 0.14811176
-
-  // left: 0.85188824
-  // remained : 0.89546527
   @override
   Path getOuterPath(ui.Rect rect, {ui.TextDirection? textDirection}) {
     final Size size = rect.size;
@@ -31,7 +24,7 @@ class MyResponsiveShapeBorder extends ShapeBorder {
     const cornerWidth = 24.807272;
     const horizontalMargin = 30;
     double remainedSpace = width - 2 * cornerWidth - 2 * horizontalMargin;
-    final start = horizontalMargin + (remainedSpace % peakWidth == 0 ? 0 : (remainedSpace % peakWidth / 2));
+    final start = horizontalMargin + ((remainedSpace % peakWidth) / 2);
     final finish =  width - start;
 
     final numberOfPeaks = (finish - start - 49.614544) / peakWidth;
