@@ -37,9 +37,17 @@ class MyShapeBorder extends ShapeBorder {
     /// From top right to left <-
     path.moveTo(size.width * 0.9362788, size.height*0.05588235 + topGap);
 
-    path.cubicTo(size.width * 0.9156087, size.height * 0.05588235 + topGap, size.width * 0.8999517, size.height * 0.04666471 + topGap, size.width * 0.8999517, size.height * 0.03529412 + topGap,);
+    path.cubicTo(
+      size.width * 0.9156087, size.height * 0.05588235 + topGap,
+      size.width * 0.8999517, size.height * 0.04666471 + topGap,
+      size.width * 0.8999517, size.height * 0.03529412 + topGap,
+    );
     path.lineTo(size.width * 0.8871535, size.height * 0.03529412 + topGap,);
-    path.cubicTo(size.width * 0.8871535,size.height*0.03955809+ topGap,size.width*0.8808696,size.height*0.04301471+ topGap,size.width*0.8731176,size.height*0.04301471+ topGap,);
+    path.cubicTo(
+      size.width * 0.8871535,size.height*0.03955809+ topGap,
+      size.width * 0.8808696,size.height*0.04301471+ topGap,
+      size.width * 0.8731176,size.height*0.04301471+ topGap,
+    );
 
     for(int i = 0; i < numberOfPeaks; i++){
       path.cubicTo(
@@ -59,7 +67,10 @@ class MyShapeBorder extends ShapeBorder {
 
     path.cubicTo(size.width*0.1167905,size.height*0.04301471+ topGap,size.width*0.1105064,size.height*0.03955809+ topGap,size.width*0.1105064,size.height*0.03529412+ topGap,);
     path.lineTo(size.width*0.09647059,size.height*0.03529412+ topGap,);
-    path.cubicTo(size.width*0.09647059,size.height*0.04623250+ topGap, size.width*0.08096266,size.height*0.05517853+ topGap, size.width*0.06138107,size.height*0.05588235+ topGap,);
+    path.cubicTo(
+      size.width*0.09647059,size.height*0.04623250+ topGap,
+      size.width*0.08096266,size.height*0.05517853+ topGap,
+      size.width*0.06138107,size.height*0.05588235+ topGap,);
 
     path.lineTo(size.width*0.06138107,size.height*0.05588235+ topGap);
 
