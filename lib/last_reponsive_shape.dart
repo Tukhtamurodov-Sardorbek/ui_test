@@ -3,6 +3,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class LastResponsiveShapeBorder extends ShapeBorder {
+  final int horizontalMargin; // must be of type int, otherwise responsiveness is lost
+  const LastResponsiveShapeBorder({required this.horizontalMargin});
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(0);
@@ -18,43 +20,30 @@ class LastResponsiveShapeBorder extends ShapeBorder {
     final topGap = rect.top;
     final width = rect.width;
 
-    const peakWidth = 16;
-    const horizontalMargin = 30.0;
+    const int peakWidth = 16; // must be of type int, otherwise responsiveness is lost
+    const peakHeight = 6;
     double cornerWidth = 24.807272;
 
-    double heightPercent = 0.04301471;
-
-
     final double remainedSpace = (width - 2 * cornerWidth - 2 * horizontalMargin) % peakWidth;
-    cornerWidth += remainedSpace/2;
+    cornerWidth += remainedSpace / 2;
 
-    var numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalMargin) ~/ peakWidth;
-    // var number = (width - 2 * cornerWidth - 2 * horizontalMargin) / peakWidth;
-    // if(number.ceil() - number <= 0.0001){
-    //   numberOfPeaks += 1;
-    // }
+    var numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalMargin) / peakWidth;
 
-    final startingPoint = width - horizontalMargin;
+    final startingPointX = width - horizontalMargin;
+    final startingPointY = 2.666665371 * peakHeight + topGap;
 
-    print('Number of peaks: $numberOfPeaks | CornerWidth: $cornerWidth');
-
-    final Path path = Path();
-    Size coordinate = Size(startingPoint, size.height*0.05588235 + topGap);
+    Size coordinate = Size(startingPointX, startingPointY);
 
     double OX(double moveBy){
       double xCoordinate = coordinate.width;
       final yCoordinate = coordinate.height;
 
       xCoordinate += moveBy;
-      // if(xCoordinate < 0){
-      //   xCoordinate = 0;
-      // } else if(xCoordinate > startingPoint){
-      //   xCoordinate = startingPoint;
-      // }
+
       coordinate = Size(xCoordinate, yCoordinate);
       return coordinate.width;
     }
-    double OzY(double moveBy){
+    double OY(double moveBy){
       final xCoordinate = coordinate.width;
       double yCoordinate = coordinate.height;
 
@@ -63,110 +52,109 @@ class LastResponsiveShapeBorder extends ShapeBorder {
       return coordinate.height;
     }
 
+
+    final Path path = Path();
+    
     /// From top right to left <-
     path.moveTo(coordinate.width, coordinate.height);
 
     path.cubicTo(
-      OX(-0.297528402 * cornerWidth), size.height * 0.05588235 + topGap,
-      OX(-0.227212408 * cornerWidth), size.height * 0.04666471 + topGap,
-      coordinate.width, size.height * 0.03529412 + topGap,
+      OX(-0.297528402 * cornerWidth), coordinate.height,
+      OX(-0.227212408 * cornerWidth), OY(-1.193903575*peakHeight),
+      coordinate.width, OY(-1.472761797*peakHeight),
     );
 
-    path.lineTo(OX(-0.271571981 * cornerWidth), size.height * 0.03529412 + topGap);
+    path.lineTo(OX(-0.271571981 * cornerWidth), coordinate.height);
 
     path.cubicTo(
-      coordinate.width, size.height*0.03955809+ topGap,
-      OX(-0.091191164 * cornerWidth), size.height*0.04301471+ topGap,
-      OX(-0.112496046 * cornerWidth), size.height*0.04301471+ topGap,
+      coordinate.width, OY(0.552285512*peakHeight),
+      OX(-0.091191164 * cornerWidth), OY(0.447714488*peakHeight),
+      OX(-0.112496046 * cornerWidth), coordinate.height,
     );
-
     for(int i = 0; i < numberOfPeaks; i++){
       path.cubicTo(
-        OX(-0.165690657 * peakWidth), size.height * heightPercent + topGap,
-        OX(-0.134313332 * peakWidth), size.height * (heightPercent - 0.00345662) + topGap,
-        coordinate.width, size.height * (heightPercent - 0.00772059) + topGap,
+        OX(-0.165690657 * peakWidth), coordinate.height,
+        OX(-0.134313332 * peakWidth), OY(-0.447714488*peakHeight),
+        coordinate.width, OY(-0.552285512*peakHeight),
       );
       path.lineTo(
-        OX(-0.39999202 * peakWidth), size.height*(heightPercent - 0.00772059)+ topGap,
+        OX(-0.39999202 * peakWidth), coordinate.height,
       );
       path.cubicTo(
-        coordinate.width, size.height*(heightPercent - 0.00345662) + topGap,
-        OX(-0.134313332 * peakWidth), size.height*heightPercent + topGap,
-        OX(-0.165690657 * peakWidth), size.height*heightPercent + topGap,
+        coordinate.width, OY(0.552285512*peakHeight),
+        OX(-0.134313332 * peakWidth), OY(0.447714488*peakHeight),
+        OX(-0.165690657 * peakWidth), coordinate.height,
       );
     }
 
     path.cubicTo(
-      OX(-0.112496046 * cornerWidth),size.height*0.04301471+ topGap,
-      OX(-0.091191164 * cornerWidth),size.height*0.03955809+ topGap,
-      coordinate.width,size.height*0.03529412+ topGap,
+      OX(-0.112496046 * cornerWidth),coordinate.height,
+      OX(-0.091191164 * cornerWidth),OY(-0.447714488*peakHeight),
+      coordinate.width, OY(-0.552285512*peakHeight),
     );
 
-    path.lineTo(OX(-0.271571981 * cornerWidth),size.height*0.03529412+ topGap,);
+    path.lineTo(OX(-0.271571981 * cornerWidth), coordinate.height,);
 
     path.cubicTo(
-      coordinate.width,size.height*0.04623250+ topGap,
-      OX(-0.227212408 * cornerWidth),size.height*0.05517853+ topGap,
-      OX(-0.297528402 * cornerWidth),size.height*0.05588235+ topGap,
+      coordinate.width, OY(1.416780324*peakHeight),
+      OX(-0.227212408 * cornerWidth),OY(1.158723621*peakHeight),
+      OX(-0.297528402 * cornerWidth),OY(0.091161427*peakHeight),
     );
 
-    path.lineTo(OX(horizontalMargin - coordinate.width),size.height*0.05588235+ topGap);
+    path.lineTo(OX(horizontalMargin - coordinate.width), coordinate.height);
 
     /// From top left to bottom left |
-    path.lineTo(coordinate.width,size.height*0.9441176 + topGap);
+    path.lineTo(coordinate.width,OY(size.height - 2.666665371 * peakHeight + topGap - coordinate.height));
 
     /// From bottom left to right ->
-    heightPercent = 0.9569853;
-
     path.cubicTo(
-      OX(0.297528402 * cornerWidth),size.height*0.9441176 + topGap,
-      OX(0.227212408 * cornerWidth),size.height*0.9533353 + topGap,
-      coordinate.width,size.height*0.9647059 + topGap,
+      OX(0.297528402 * cornerWidth),coordinate.height,
+      OX(0.227212408 * cornerWidth),OY(1.193911346*peakHeight),
+      coordinate.width,OY(1.472763092*peakHeight),
     );
-    path.lineTo(OX(0.271571981 * cornerWidth),size.height*0.9647059 + topGap,);
+    path.lineTo(OX(0.271571981 * cornerWidth), coordinate.height);
     path.cubicTo(
-      coordinate.width,size.height*0.9604426 + topGap,
-      OX(0.091191164 * cornerWidth),size.height*0.9569853 + topGap,
-      OX(0.112496046 * cornerWidth),size.height*0.9569853 + topGap,
+      coordinate.width, OY(-0.552198731*peakHeight),
+      OX(0.091191164 * cornerWidth),OY(-0.447802564*peakHeight),
+      OX(0.112496046 * cornerWidth),coordinate.height,
     );
 
     for(int i = 0; i < numberOfPeaks; i++){
       path.cubicTo(
-        OX(0.165690657 * peakWidth), size.height * heightPercent + topGap,
-        OX(0.134313332 * peakWidth), size.height * (heightPercent + 0.0034573) + topGap,
-        coordinate.width, size.height * (heightPercent + 0.0077206) + topGap,
+        OX(0.165690657 * peakWidth), coordinate.height,
+        OX(0.134313332 * peakWidth), OY(0.447802564*peakHeight),
+        coordinate.width, OY(0.552198731*peakHeight),
       );
 
       path.lineTo(
-        OX(0.39999202 * peakWidth), size.height*(heightPercent + 0.0077206)+ topGap,
+        OX(0.39999202 * peakWidth), coordinate.height,
       );
 
 
       path.cubicTo(
-        coordinate.width, size.height*(heightPercent + 0.0034573) + topGap,
-        OX(0.134313332 * peakWidth), size.height*heightPercent + topGap,
-        OX(0.165690657 * peakWidth), size.height*heightPercent + topGap,
+        coordinate.width, OY(-0.552198731*peakHeight),
+        OX(0.134313332 * peakWidth), OY(-0.447802564*peakHeight),
+        OX(0.165690657 * peakWidth), coordinate.height,
       );
-
     }
 
 
     path.cubicTo(
-      OX(0.112496046 * cornerWidth),size.height*0.9569853 + topGap,
-      OX(0.091191164 * cornerWidth),size.height*0.9604426 + topGap,
-      coordinate.width,size.height*0.9647059 + topGap,
+      OX(0.112496046 * cornerWidth),coordinate.height,
+      OX(0.091191164 * cornerWidth),OY(0.447802564*peakHeight),
+      coordinate.width,OY(0.552198731*peakHeight),
     );
-    path.lineTo(OX(0.271571981 * cornerWidth),size.height*0.9647059 + topGap);
+    path.lineTo(OX(0.271571981 * cornerWidth),coordinate.height);
     path.cubicTo(
-      coordinate.width,size.height*0.9537676 + topGap,
-      OX(0.227212408 * cornerWidth),size.height*0.9448221 + topGap,
-      OX(0.297528402 * cornerWidth),size.height*0.9441574 + topGap,
+      coordinate.width,OY(-1.416769962*peakHeight),
+      OX(0.227212408 * cornerWidth),OY(-1.158654973*peakHeight),
+      OX(0.297528402 * cornerWidth),OY(-0.086094457*peakHeight),
     );
 
-    path.lineTo(OX(startingPoint - coordinate.width),size.height*0.9441176 + topGap);
+    path.lineTo(OX(startingPointX - coordinate.width),OY(-0.005155046*peakHeight));
 
     /// From bottom right to top right
-    path.lineTo(coordinate.width,size.height*0.05588235 + topGap);
+    path.lineTo(coordinate.width,OY(startingPointY - coordinate.height));
 
     path.close();
 

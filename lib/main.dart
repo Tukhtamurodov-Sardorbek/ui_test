@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui_test/responsive_shape_border.dart';
 import 'package:ui_test/shape_border.dart';
-
 import 'last_reponsive_shape.dart';
-import 'new_method.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,13 +39,12 @@ class ReceiptPage extends StatelessWidget {
         child: Container(
           height: 500.0,
           width: double.infinity,
-          // padding: const EdgeInsets.symmetric(horizontal: 10),
-          color: Colors.black,
+          // color: Colors.black,
           child: Container(
             height: 500.0,
             decoration: ShapeDecoration(
               color: Colors.red,
-              shape: LastResponsiveShapeBorder(),
+              shape: const LastResponsiveShapeBorder(horizontalMargin: 10),
               shadows: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
