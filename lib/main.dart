@@ -43,7 +43,7 @@ class ReceiptPage extends StatelessWidget {
             height: 500.0,
             decoration: ShapeDecoration(
               color: Colors.red,
-              shape: const LastResponsiveShapeBorder(horizontalMargin: 10),
+              shape: const LastResponsiveShapeBorder(horizontalMargin: 0),
               shadows: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
