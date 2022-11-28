@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'package:ui_test/reponsive_shape.dart';
+import 'package:ui_test/responsive_custom_shape.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:typed_data';
