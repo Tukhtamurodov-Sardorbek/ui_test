@@ -20,6 +20,8 @@ dependencies:
   share_plus: ^6.3.0
   # Save file
   path_provider: ^2.0.11
+  # Bottom Sheet
+  modal_bottom_sheet: ^2.1.2
 
 dev_dependencies:
   flutter_test:
