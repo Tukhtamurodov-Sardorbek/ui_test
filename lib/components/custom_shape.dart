@@ -1,10 +1,9 @@
 import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 
 class ResponsiveCustomShapeBorder extends ShapeBorder {
-  final int horizontalMargin; // must be of type int, otherwise responsiveness is lost
-  const ResponsiveCustomShapeBorder({required this.horizontalMargin});
+  final int horizontalPadding; // must be of type int, otherwise responsiveness is lost
+  const ResponsiveCustomShapeBorder({required this.horizontalPadding});
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(0);
@@ -24,12 +23,12 @@ class ResponsiveCustomShapeBorder extends ShapeBorder {
     const peakHeight = 6;
     double cornerWidth = 24.807272;
 
-    final double remainedSpace = (width - 2 * cornerWidth - 2 * horizontalMargin) % peakWidth;
+    final double remainedSpace = (width - 2 * cornerWidth - 2 * horizontalPadding) % peakWidth;
     cornerWidth += remainedSpace / 2;
 
-    var numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalMargin) / peakWidth;
+    var numberOfPeaks = (width - 2 * cornerWidth - 2 * horizontalPadding) / peakWidth;
 
-    final startingPointX = width - horizontalMargin;
+    final startingPointX = width - horizontalPadding;
     final startingPointY = 2.666665371 * peakHeight + topGap;
 
     Size coordinate = Size(startingPointX, startingPointY);
@@ -101,7 +100,7 @@ class ResponsiveCustomShapeBorder extends ShapeBorder {
       OX(-0.297528402 * cornerWidth),OY(0.091161427*peakHeight),
     );
 
-    path.lineTo(OX(horizontalMargin - coordinate.width), coordinate.height);
+    path.lineTo(OX(horizontalPadding - coordinate.width), coordinate.height);
 
     /// From top left to bottom left |
     path.lineTo(coordinate.width,OY(size.height - 2.666665371 * peakHeight + topGap - coordinate.height));

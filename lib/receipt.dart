@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
@@ -9,8 +8,8 @@ import 'package:ui_test/components/custom_shape.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ui_test/components/pdf_custom_decoration.dart';
 
-class ReadyReceipt extends StatefulWidget {
-  const ReadyReceipt({super.key});
+class Receipt extends StatefulWidget {
+  const Receipt({super.key});
 
   static const data = {
     'Receipt number': '0220005',
@@ -27,22 +26,24 @@ class ReadyReceipt extends StatefulWidget {
   };
 
   @override
-  State<ReadyReceipt> createState() => _ReadyReceiptState();
+  State<Receipt> createState() => _ReceiptState();
 }
 
-class _ReadyReceiptState extends State<ReadyReceipt> {
+class _ReceiptState extends State<Receipt> {
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
+
       appBar: AppBar(
         elevation: 8,
         automaticallyImplyLeading: false,
         title: const Text('Receipt'),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
+
       body: ListView(
         children: [
           const SizedBox(height: 16.0),
@@ -50,7 +51,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             decoration: ShapeDecoration(
               color: Colors.white,
-              shape: const ResponsiveCustomShapeBorder(horizontalMargin: 16),
+              shape: const ResponsiveCustomShapeBorder(horizontalPadding: 16),
               shadows: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -103,7 +104,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  itemCount: ReadyReceipt.data.length,
+                  itemCount: Receipt.data.length,
                   separatorBuilder: (BuildContext context, int index) {
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 14.0),
@@ -116,7 +117,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          ReadyReceipt.data.keys.toList()[index],
+                          Receipt.data.keys.toList()[index],
                           style: const TextStyle(
                             fontSize: 16,
                             color: Color(0xFF99A3B3),
@@ -124,7 +125,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                           ),
                         ),
                         Text(
-                          ReadyReceipt.data.values.toList()[index],
+                          Receipt.data.values.toList()[index],
                           style: const TextStyle(
                             fontSize: 16,
                             color: Color(0xFF071222),
@@ -179,7 +180,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                             child: pdf.Container(
                               width: 350,
                               padding: const pdf.EdgeInsets.symmetric(vertical: 20),
-                              
+
                               decoration: PdfCustomDecoration(),
 
                               child: pdf.Column(
@@ -187,8 +188,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                                 crossAxisAlignment: pdf.CrossAxisAlignment.start,
                                 children: [
                                   pdf.Padding(
-                                    padding:
-                                        const pdf.EdgeInsets.only(left: 25.0),
+                                    padding: const pdf.EdgeInsets.only(left: 25.0),
                                     child: pdf.Image(
                                       pdf.MemoryImage(logoByteList),
                                       height: 46,
@@ -228,7 +228,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                                   pdf.ListView.separated(
                                     padding: const pdf.EdgeInsets.only(
                                         left: 15.0, right: 16.0),
-                                    itemCount: ReadyReceipt.data.length,
+                                    itemCount: Receipt.data.length,
                                     separatorBuilder: (context, index) {
                                       return pdf.Container(
                                         margin: const pdf.EdgeInsets.symmetric(
@@ -243,7 +243,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                                             pdf.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pdf.Text(
-                                            ReadyReceipt.data.keys
+                                            Receipt.data.keys
                                                 .toList()[index],
                                             style: pdf.TextStyle(
                                               fontSize: 16,
@@ -253,7 +253,7 @@ class _ReadyReceiptState extends State<ReadyReceipt> {
                                             ),
                                           ),
                                           pdf.Text(
-                                            ReadyReceipt.data.values
+                                            Receipt.data.values
                                                 .toList()[index],
                                             style: pdf.TextStyle(
                                               fontSize: 16,
