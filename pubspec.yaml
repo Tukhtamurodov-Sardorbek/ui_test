@@ -17,7 +17,9 @@ dependencies:
   # Create pdf document
   pdf: ^3.8.4
   # Share the pdf
-  share_plus: ^6.3.0
+#  share_plus: ^6.3.0
+  # Open pdf document
+  open_file: ^3.2.1
   # Save file
   path_provider: ^2.0.11
   # Bottom Sheet

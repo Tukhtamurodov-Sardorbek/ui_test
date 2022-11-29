@@ -2,9 +2,9 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-class LastResponsiveShapeBorder extends ShapeBorder {
+class ResponsiveCustomShapeBorder extends ShapeBorder {
   final int horizontalMargin; // must be of type int, otherwise responsiveness is lost
-  const LastResponsiveShapeBorder({required this.horizontalMargin});
+  const ResponsiveCustomShapeBorder({required this.horizontalMargin});
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(0);

@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:share_plus/share_plus.dart';
-import 'package:ui_test/responsive_custom_shape.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'components/custom_shape.dart';
 
 
 class ReceiptPageNew extends StatefulWidget {
@@ -51,7 +52,7 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             decoration: ShapeDecoration(
               color: Colors.white,
-              shape: const LastResponsiveShapeBorder(horizontalMargin: 16),
+              shape: const ResponsiveCustomShapeBorder(horizontalMargin: 16),
               shadows: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -180,14 +181,14 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                         child: pw.Container(
                           width: 350,
                           padding: const pw.EdgeInsets.fromLTRB(21.5, 36, 21.44, 36),
-                          // decoration: pw.BoxDecoration(
-                          //   shape: pw.BoxShape.circle,
-                          //     image: pw.DecorationImage(
-                          //       image: pw.MemoryImage(receiptByteList),
-                          //       fit: pw.BoxFit.fill,
-                          //     ),
-                          // ),
-                          decoration: MyDecoration(),
+                          decoration: pw.BoxDecoration(
+                            shape: pw.BoxShape.circle,
+                              image: pw.DecorationImage(
+                                image: pw.MemoryImage(receiptByteList),
+                                fit: pw.BoxFit.fill,
+                              ),
+                          ),
+                          // decoration: MyDecoration(),
                           child: pw.Column(
                             mainAxisSize: pw.MainAxisSize.min,
                             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -378,10 +379,12 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                     // setState((){
                     //   isLoading = false;
                     // });
-                    Share.shareXFiles(
-                      [XFile(file.path)],
-                      text: 'Check (${DateTime.now()}',
-                    );
+                    // Share.shareXFiles(
+                    //   [XFile(file.path)],
+                    //   text: 'Check (${DateTime.now()}',
+                    // );
+
+                    await OpenFile.open(file.path);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFEAF6EF),
