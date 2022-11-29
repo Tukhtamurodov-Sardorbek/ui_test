@@ -30,7 +30,7 @@ class PdfCustomDecoration implements pdf.BoxDecoration{
   ];
 
   @override
-  PdfColor? get color => PdfColors.red;
+  PdfColor? get color => PdfColors.amberAccent;
 
   @override
   pdf.Gradient? get gradient => null;
@@ -187,7 +187,7 @@ class PdfCustomDecoration implements pdf.BoxDecoration{
     context.canvas.lineTo(coordinate.width,OY(startingPointY - coordinate.height));
 
     context.canvas
-      ..setColor(const PdfColor.fromInt(0xFF0F7B30))
+      ..setColor(color)
       ..fillPath();
 
     // context.canvas.closePath();
