@@ -9,8 +9,8 @@ import 'package:ui_test/responsive_custom_shape.dart';
 import 'package:path_provider/path_provider.dart';
 
 
-class ReceiptPageNew extends StatefulWidget {
-  const ReceiptPageNew({super.key});
+class Developing extends StatefulWidget {
+  const Developing({super.key});
 
   static const data = {
     'Receipt number': 'Tesha tegmagani',
@@ -27,10 +27,10 @@ class ReceiptPageNew extends StatefulWidget {
   };
 
   @override
-  State<ReceiptPageNew> createState() => _ReceiptPageNewState();
+  State<Developing> createState() => _DevelopingState();
 }
 
-class _ReceiptPageNewState extends State<ReceiptPageNew> {
+class _DevelopingState extends State<Developing> {
   bool isLoading = false;
 
   @override
@@ -104,7 +104,7 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  itemCount: ReceiptPageNew.data.length,
+                  itemCount: Developing.data.length,
                   separatorBuilder: (BuildContext context, int index) {
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 14.0),
@@ -117,7 +117,7 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          ReceiptPageNew.data.keys.toList()[index],
+                          Developing.data.keys.toList()[index],
                           style: const TextStyle(
                             fontSize: 16,
                             color: Color(0xFF99A3B3),
@@ -125,7 +125,7 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                           ),
                         ),
                         Text(
-                          ReceiptPageNew.data.values.toList()[index],
+                          Developing.data.values.toList()[index],
                           style: const TextStyle(
                             fontSize: 16,
                             color: Color(0xFF071222),
@@ -169,11 +169,11 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
 
                     final ByteData logoBytes = await rootBundle.load('assets/logo.png');
                     final Uint8List logoByteList =
-                        logoBytes.buffer.asUint8List();
+                    logoBytes.buffer.asUint8List();
 
                     final ByteData receiptBytes = await rootBundle.load('assets/receipt_layout.png');
                     final Uint8List receiptByteList =
-                        receiptBytes.buffer.asUint8List();
+                    receiptBytes.buffer.asUint8List();
 
                     pdf.addPage(pw.Page(build: (context) {
                       return pw.Center(
@@ -231,7 +231,7 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                               pw.SizedBox(height: 14),
                               pw.ListView.separated(
                                 padding: const pw.EdgeInsets.only(left: 15.0, right: 16.0),
-                                itemCount: ReceiptPageNew.data.length,
+                                itemCount: Developing.data.length,
                                 separatorBuilder: (context, index) {
                                   return pw.Container(
                                     margin: const pw.EdgeInsets.symmetric(vertical: 14.0),
@@ -244,7 +244,7 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                     children: [
                                       pw.Text(
-                                        ReceiptPageNew.data.keys.toList()[index],
+                                        Developing.data.keys.toList()[index],
                                         style: pw.TextStyle(
                                           fontSize: 16,
                                           color: const PdfColor.fromInt(0xFF99A3B3),
@@ -252,7 +252,7 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                                         ),
                                       ),
                                       pw.Text(
-                                        ReceiptPageNew.data.values.toList()[index],
+                                        Developing.data.values.toList()[index],
                                         style: pw.TextStyle(
                                           fontSize: 16,
                                           color: const PdfColor.fromInt(0xFF071222),
@@ -393,13 +393,13 @@ class _ReceiptPageNewState extends State<ReceiptPageNew> {
                   child: isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : const Text(
-                          'Поделиться',
-                          style: TextStyle(
-                            color: Color(0xFF2AA65C),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                    'Поделиться',
+                    style: TextStyle(
+                      color: Color(0xFF2AA65C),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ],
             ),
