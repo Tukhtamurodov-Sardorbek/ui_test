@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   cupertino_icons: ^1.0.2
   # Create pdf document
   pdf: ^3.8.4
@@ -24,6 +23,8 @@ dependencies:
   path_provider: ^2.0.11
   # Bottom Sheet
   modal_bottom_sheet: ^2.1.2
+  # Capture screen
+  screenshot: ^1.2.3
 
 dev_dependencies:
   flutter_test:

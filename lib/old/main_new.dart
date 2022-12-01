@@ -52,7 +52,7 @@
 //             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
 //             decoration: ShapeDecoration(
 //               color: Colors.white,
-//               shape: const ResponsiveCustomShapeBorder(horizontalMargin: 16),
+//               shape: const ResponsiveCustomShapeBorder(horizontalPadding: 16),
 //               shadows: [
 //                 BoxShadow(
 //                   color: Colors.grey.withOpacity(0.5),
