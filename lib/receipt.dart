@@ -2,11 +2,11 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/widgets.dart' as pdf;
 import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:ui_test/components/custom_shape.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ui_test/components/pdf_custom_decoration.dart';
@@ -53,7 +53,7 @@ class _ReceiptState extends State<Receipt> {
           const SizedBox(height: 16.0),
           ReceiptContainer(
             key: globalKey,
-            child:  Column(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -140,184 +140,402 @@ class _ReceiptState extends State<Receipt> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     final height = globalKey.currentContext?.size?.height ?? 0;
                     final width = globalKey.currentContext?.size?.width ?? 360;
                     print((globalKey.currentContext?.size).toString());
-                    final receiptBackground = await ReceiptContainer().capture(context, height: height, width: width);
-
+                    final receiptBackground = await ReceiptContainer()
+                        .capture(context, height: height, width: width);
 
                     String tempPath = (await getTemporaryDirectory()).path;
                     File imgFile = await File('$tempPath/receipt.png').create();
                     imgFile.writeAsBytesSync(receiptBackground);
 
-                    File image = new File(imgFile.path); // Or any other way to get a File instance.
-                    var decodedImage = await decodeImageFromList(image.readAsBytesSync());
-                    print('################################################');
-                    print('WIDTH: ${decodedImage.width}   HEIGHT: ${decodedImage.height}');
+                    File image = new File(imgFile
+                        .path); // Or any other way to get a File instance.
+                    var decodedImage =
+                        await decodeImageFromList(image.readAsBytesSync());
 
                     final ByteData logoBytes =
-                    await rootBundle.load('assets/logo.png');
+                        await rootBundle.load('assets/logo.png');
                     final Uint8List logoByteList =
-                    logoBytes.buffer.asUint8List();
+                        logoBytes.buffer.asUint8List();
+
+                    final ByteData topBytes =
+                        await rootBundle.load('assets/new/top.jpg');
+                    final Uint8List topByteList = topBytes.buffer.asUint8List();
+
+                    final ByteData bodyBytes =
+                        await rootBundle.load('assets/new/body.png');
+                    final Uint8List bodyByteList =
+                        bodyBytes.buffer.asUint8List();
+
+                    final ByteData bottomBytes =
+                        await rootBundle.load('assets/new/bottom.jpg');
+                    final Uint8List bottomByteList =
+                        bottomBytes.buffer.asUint8List();
 
                     final receipt = pdf.Document();
 
-                    receipt.addPage(
-                        pdf.Page(
-                          pageFormat: PdfPageFormat.a4,
-                            orientation: pdf.PageOrientation.portrait,
-
-                            build: (context) {
-                      return pdf.Container(
-                          width: width,
-                          height: height,
-                        alignment: pdf.Alignment.center,
-                        child: pdf.Stack(
-                          children: [
-                            pdf.Container(
+                    receipt.addPage(pdf.Page(
+                        pageFormat: PdfPageFormat.a4,
+                        orientation: pdf.PageOrientation.portrait,
+                        build: (context) {
+                          return pdf.Container(
                               width: width,
                               height: height,
-                              child: pdf.Image(
-                                pdf.MemoryImage(receiptBackground),
-                              )
-                            ),
-                            pdf.Positioned.fill(
-                              child: pdf.Column(
-                                mainAxisSize: pdf.MainAxisSize.min,
-                                crossAxisAlignment: pdf.CrossAxisAlignment.start,
-                                children: [
-                                  pdf.Padding(
-                                    padding:
-                                    const pdf.EdgeInsets.only(left: 25.0),
-                                    child: pdf.Image(
-                                      pdf.MemoryImage(logoByteList),
-                                      height: 46,
-                                      width: 120,
-                                    ),
-                                  ),
-                                  pdf.SizedBox(height: 10),
-                                  pdf.Container(
-                                    height: 100,
-                                    width: double.infinity,
-                                    color: const PdfColor.fromInt(0xFF2AA65C),
-                                    padding: const pdf.EdgeInsets.symmetric(vertical: 16.0),
+                              color: PdfColors.black,
+                              alignment: pdf.Alignment.center,
+                              child: pdf.Stack(children: [
+                                pdf.Positioned(
+                                  left: 0,
+                                  right: 0,
+                                  top: 0,
+                                  child: pdf.Image(pdf.MemoryImage(topByteList),
+                                      fit: pdf.BoxFit.fitWidth),
+                                ),
+                                pdf.Positioned.fill(
+                                  top: 30,
+                                  bottom: 30,
+                                  child: pdf.Container(
                                     child: pdf.Column(
+                                      mainAxisSize: pdf.MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          pdf.CrossAxisAlignment.stretch,
                                       children: [
-                                        pdf.Text(
-                                          'Transfer completed successfully',
-                                          style: pdf.TextStyle(
-                                            fontSize: 16.0,
-                                            color: PdfColors.white,
-                                            fontWeight: pdf.FontWeight.bold,
+                                        pdf.Padding(
+                                          padding: const pdf.EdgeInsets.only(
+                                              left: 25.0),
+                                          child: pdf.Image(
+                                            pdf.MemoryImage(logoByteList),
+                                            height: 46,
+                                            width: 120,
                                           ),
                                         ),
-                                        pdf.SizedBox(height: 8.0),
-                                        pdf.Text(
-                                          '18 000 000 uzs',
-                                          style: pdf.TextStyle(
-                                            fontSize: 34,
-                                            color: PdfColors.white,
-                                            fontWeight: pdf.FontWeight.bold,
+                                        pdf.SizedBox(height: 10),
+                                        pdf.Container(
+                                          height: 100,
+                                          color: const PdfColor.fromInt(
+                                              0xFF2AA65C),
+                                          padding:
+                                              const pdf.EdgeInsets.symmetric(
+                                                  vertical: 16.0),
+                                          child: pdf.Column(
+                                            children: [
+                                              pdf.Text(
+                                                'Transfer completed successfully',
+                                                style: pdf.TextStyle(
+                                                  fontSize: 16.0,
+                                                  color: PdfColors.white,
+                                                  fontWeight:
+                                                      pdf.FontWeight.bold,
+                                                ),
+                                              ),
+                                              pdf.SizedBox(height: 8.0),
+                                              pdf.Text(
+                                                '18 000 000 uzs',
+                                                style: pdf.TextStyle(
+                                                  fontSize: 34,
+                                                  color: PdfColors.white,
+                                                  fontWeight:
+                                                      pdf.FontWeight.bold,
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        )
+                                        ),
+                                        pdf.SizedBox(height: 14),
+                                        for (int index = 0;
+                                            index < Receipt.data.length;
+                                            index++)
+                                          pdf.Column(
+                                            mainAxisSize: pdf.MainAxisSize.min,
+                                            children: [
+                                              pdf.Row(
+                                                mainAxisAlignment: pdf
+                                                    .MainAxisAlignment
+                                                    .spaceBetween,
+                                                children: [
+                                                  pdf.Text(
+                                                    Receipt.data.keys
+                                                        .toList()[index],
+                                                    style: pdf.TextStyle(
+                                                      fontSize: 16,
+                                                      color: const PdfColor
+                                                          .fromInt(0xFF99A3B3),
+                                                      fontWeight:
+                                                          pdf.FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  pdf.Text(
+                                                    Receipt.data.values
+                                                        .toList()[index],
+                                                    style: pdf.TextStyle(
+                                                      fontSize: 16,
+                                                      color: const PdfColor
+                                                          .fromInt(0xFF071222),
+                                                      fontWeight:
+                                                          pdf.FontWeight.bold,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              index ==
+                                                      index <
+                                                          Receipt.data.length -
+                                                              1
+                                                  ? pdf.SizedBox()
+                                                  : pdf.Container(
+                                                      margin: const pdf
+                                                              .EdgeInsets.symmetric(
+                                                          vertical: 14.0),
+                                                      color: const PdfColor
+                                                          .fromInt(0xFFC8C7CC),
+                                                      height: 0.5,
+                                                    ),
+                                            ],
+                                          ),
+                                        pdf.SizedBox(height: 14),
                                       ],
                                     ),
                                   ),
-                                  pdf.SizedBox(height: 14),
-                                  for(int index = 0; index < Receipt.data.length; index++)
-                                    pdf.Column(
-                                      mainAxisSize: pdf.MainAxisSize.min,
-                                      children: [
-                                        pdf.Row(
-                                          mainAxisAlignment:
-                                          pdf.MainAxisAlignment.spaceBetween,
+                                ),
+                                pdf.Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: pdf.Image(
+                                      pdf.MemoryImage(bottomByteList),
+                                      fit: pdf.BoxFit.fitWidth),
+                                )
+                              ]));
+                        }));
+
+                    final bytes = await receipt.save();
+
+                    final dir = await getApplicationDocumentsDirectory();
+                    final file = File('${dir.path}/check${DateTime.now()}.pdf');
+
+                    await file.writeAsBytes(bytes);
+
+                    Share.shareXFiles(
+                      [XFile(file.path)],
+                      text: 'Check (${DateTime.now()}',
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFEAF6EF),
+                    fixedSize: const Size(100, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  child: const Text(
+                    'Send',
+                    style: TextStyle(
+                      color: Color(0xFF2AA65C),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final height = globalKey.currentContext?.size?.height ?? 0;
+                    final width = globalKey.currentContext?.size?.width ?? 360;
+                    print((globalKey.currentContext?.size).toString());
+                    final receiptBackground = await ReceiptContainer()
+                        .capture(context, height: height, width: width);
+
+                    String tempPath = (await getTemporaryDirectory()).path;
+                    File imgFile = await File('$tempPath/receipt.png').create();
+                    imgFile.writeAsBytesSync(receiptBackground);
+
+                    File image = new File(imgFile
+                        .path); // Or any other way to get a File instance.
+                    var decodedImage =
+                        await decodeImageFromList(image.readAsBytesSync());
+                    print('################################################');
+                    print(
+                        'WIDTH: ${decodedImage.width}   HEIGHT: ${decodedImage.height}');
+
+                    final ByteData logoBytes =
+                        await rootBundle.load('assets/logo.png');
+                    final Uint8List logoByteList =
+                        logoBytes.buffer.asUint8List();
+
+                    final receipt = pdf.Document();
+
+                    receipt.addPage(pdf.Page(
+                        pageFormat: PdfPageFormat.a4,
+                        orientation: pdf.PageOrientation.portrait,
+                        build: (context) {
+                          return pdf.Container(
+                              width: width,
+                              height: height,
+                              alignment: pdf.Alignment.center,
+                              child: pdf.Stack(children: [
+                                pdf.Container(
+                                    width: width,
+                                    height: height,
+                                    child: pdf.Image(
+                                      pdf.MemoryImage(receiptBackground),
+                                    )),
+                                pdf.Positioned.fill(
+                                  child: pdf.Column(
+                                    mainAxisSize: pdf.MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        pdf.CrossAxisAlignment.start,
+                                    children: [
+                                      pdf.Padding(
+                                        padding: const pdf.EdgeInsets.only(
+                                            left: 25.0),
+                                        child: pdf.Image(
+                                          pdf.MemoryImage(logoByteList),
+                                          height: 46,
+                                          width: 120,
+                                        ),
+                                      ),
+                                      pdf.SizedBox(height: 10),
+                                      pdf.Container(
+                                        height: 100,
+                                        width: double.infinity,
+                                        color:
+                                            const PdfColor.fromInt(0xFF2AA65C),
+                                        padding: const pdf.EdgeInsets.symmetric(
+                                            vertical: 16.0),
+                                        child: pdf.Column(
                                           children: [
                                             pdf.Text(
-                                              Receipt.data.keys.toList()[index],
+                                              'Transfer completed successfully',
                                               style: pdf.TextStyle(
-                                                fontSize: 16,
-                                                color: const PdfColor.fromInt(0xFF99A3B3),
+                                                fontSize: 16.0,
+                                                color: PdfColors.white,
                                                 fontWeight: pdf.FontWeight.bold,
                                               ),
                                             ),
+                                            pdf.SizedBox(height: 8.0),
                                             pdf.Text(
-                                              Receipt.data.values.toList()[index],
+                                              '18 000 000 uzs',
                                               style: pdf.TextStyle(
-                                                fontSize: 16,
-                                                color: const PdfColor.fromInt(0xFF071222),
+                                                fontSize: 34,
+                                                color: PdfColors.white,
                                                 fontWeight: pdf.FontWeight.bold,
                                               ),
                                             )
                                           ],
                                         ),
-                                        index == index < Receipt.data.length - 1 ? pdf.SizedBox() : pdf.Container(
-                                          margin: const pdf.EdgeInsets.symmetric(vertical: 14.0),
-                                          color:
-                                          const PdfColor.fromInt(0xFFC8C7CC),
-                                          height: 0.5,
+                                      ),
+                                      pdf.SizedBox(height: 14),
+                                      for (int index = 0;
+                                          index < Receipt.data.length;
+                                          index++)
+                                        pdf.Column(
+                                          mainAxisSize: pdf.MainAxisSize.min,
+                                          children: [
+                                            pdf.Row(
+                                              mainAxisAlignment: pdf
+                                                  .MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                pdf.Text(
+                                                  Receipt.data.keys
+                                                      .toList()[index],
+                                                  style: pdf.TextStyle(
+                                                    fontSize: 16,
+                                                    color:
+                                                        const PdfColor.fromInt(
+                                                            0xFF99A3B3),
+                                                    fontWeight:
+                                                        pdf.FontWeight.bold,
+                                                  ),
+                                                ),
+                                                pdf.Text(
+                                                  Receipt.data.values
+                                                      .toList()[index],
+                                                  style: pdf.TextStyle(
+                                                    fontSize: 16,
+                                                    color:
+                                                        const PdfColor.fromInt(
+                                                            0xFF071222),
+                                                    fontWeight:
+                                                        pdf.FontWeight.bold,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            index ==
+                                                    index <
+                                                        Receipt.data.length - 1
+                                                ? pdf.SizedBox()
+                                                : pdf.Container(
+                                                    margin: const pdf
+                                                            .EdgeInsets.symmetric(
+                                                        vertical: 14.0),
+                                                    color:
+                                                        const PdfColor.fromInt(
+                                                            0xFFC8C7CC),
+                                                    height: 0.5,
+                                                  ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  // pdf.ListView.separated(
-                                  //   padding: const pdf.EdgeInsets.only(left: 15.0, right: 16.0),
-                                  //   itemCount: Receipt.data.length,
-                                  //   separatorBuilder: (context, index) {
-                                  //     return pdf.Container(
-                                  //       margin: const pdf.EdgeInsets.symmetric(vertical: 14.0),
-                                  //       color:
-                                  //       const PdfColor.fromInt(0xFFC8C7CC),
-                                  //       height: 0.5,
-                                  //     );
-                                  //   },
-                                  //   itemBuilder: (context, index) {
-                                  //     return pdf.Row(
-                                  //       mainAxisAlignment:
-                                  //       pdf.MainAxisAlignment.spaceBetween,
-                                  //       children: [
-                                  //         pdf.Text(
-                                  //           Receipt.data.keys.toList()[index],
-                                  //           style: pdf.TextStyle(
-                                  //             fontSize: 16,
-                                  //             color: const PdfColor.fromInt(0xFF99A3B3),
-                                  //             fontWeight: pdf.FontWeight.bold,
-                                  //           ),
-                                  //         ),
-                                  //         pdf.Text(
-                                  //           Receipt.data.values.toList()[index],
-                                  //           style: pdf.TextStyle(
-                                  //             fontSize: 16,
-                                  //             color: const PdfColor.fromInt(0xFF071222),
-                                  //             fontWeight: pdf.FontWeight.bold,
-                                  //           ),
-                                  //         )
-                                  //       ],
-                                  //     );
-                                  //   },
-                                  // ),
-                                  pdf.SizedBox(height: 14),
-                                ],
-                              ),
-                            )
-                            // pdf.Container(
-                            //   height: height,
-                            //   width: width,
-                            //   alignment: pdf.Alignment.center,
-                            //   // padding: const pdf.EdgeInsets.fromLTRB(21.5, 36, 21.44, 36),
-                            //   padding: const pdf.EdgeInsets.fromLTRB(20, 36, 45, 36),
-                            //   decoration: pdf.BoxDecoration(
-                            //     // color: PdfColors.black,
-                            //     image: pdf.DecorationImage(
-                            //       image: ,
-                            //       // fit: pdf.BoxFit.fitWidth,
-                            //     ),
-                            //   ),
-                            //   child:
-                            // ),
-                          ]
-                        )
-                      );
-                    }));
+                                      // pdf.ListView.separated(
+                                      //   padding: const pdf.EdgeInsets.only(left: 15.0, right: 16.0),
+                                      //   itemCount: Receipt.data.length,
+                                      //   separatorBuilder: (context, index) {
+                                      //     return pdf.Container(
+                                      //       margin: const pdf.EdgeInsets.symmetric(vertical: 14.0),
+                                      //       color:
+                                      //       const PdfColor.fromInt(0xFFC8C7CC),
+                                      //       height: 0.5,
+                                      //     );
+                                      //   },
+                                      //   itemBuilder: (context, index) {
+                                      //     return pdf.Row(
+                                      //       mainAxisAlignment:
+                                      //       pdf.MainAxisAlignment.spaceBetween,
+                                      //       children: [
+                                      //         pdf.Text(
+                                      //           Receipt.data.keys.toList()[index],
+                                      //           style: pdf.TextStyle(
+                                      //             fontSize: 16,
+                                      //             color: const PdfColor.fromInt(0xFF99A3B3),
+                                      //             fontWeight: pdf.FontWeight.bold,
+                                      //           ),
+                                      //         ),
+                                      //         pdf.Text(
+                                      //           Receipt.data.values.toList()[index],
+                                      //           style: pdf.TextStyle(
+                                      //             fontSize: 16,
+                                      //             color: const PdfColor.fromInt(0xFF071222),
+                                      //             fontWeight: pdf.FontWeight.bold,
+                                      //           ),
+                                      //         )
+                                      //       ],
+                                      //     );
+                                      //   },
+                                      // ),
+                                      pdf.SizedBox(height: 14),
+                                    ],
+                                  ),
+                                )
+                                // pdf.Container(
+                                //   height: height,
+                                //   width: width,
+                                //   alignment: pdf.Alignment.center,
+                                //   // padding: const pdf.EdgeInsets.fromLTRB(21.5, 36, 21.44, 36),
+                                //   padding: const pdf.EdgeInsets.fromLTRB(20, 36, 45, 36),
+                                //   decoration: pdf.BoxDecoration(
+                                //     // color: PdfColors.black,
+                                //     image: pdf.DecorationImage(
+                                //       image: ,
+                                //       // fit: pdf.BoxFit.fitWidth,
+                                //     ),
+                                //   ),
+                                //   child:
+                                // ),
+                              ]));
+                        }));
 
                     final bytes = await receipt.save();
 
@@ -334,11 +552,15 @@ class _ReceiptState extends State<Receipt> {
                     //   text: 'Check (${DateTime.now()}',
                     // );
 
-                    await OpenFile.open(file.path);
+                    // await OpenFile.open(file.path);
+                    Share.shareXFiles(
+                      [XFile(file.path)],
+                      text: 'Check (${DateTime.now()}',
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFEAF6EF),
-                    fixedSize: const Size(150, 50),
+                    fixedSize: const Size(100, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
@@ -378,15 +600,14 @@ class _ReceiptState extends State<Receipt> {
                               width: 360,
                               padding:
                                   const pdf.EdgeInsets.symmetric(vertical: 20),
-                              foregroundDecoration: pdf.BoxDecoration(
-
-                                  boxShadow: [
-                                    pdf.BoxShadow(
-                                      color: PdfColors.grey,
-                                      spreadRadius: 12,
-                                      blurRadius: 12,
-                                    )
-                                  ]),
+                              foregroundDecoration:
+                                  pdf.BoxDecoration(boxShadow: [
+                                pdf.BoxShadow(
+                                  color: PdfColors.grey,
+                                  spreadRadius: 12,
+                                  blurRadius: 12,
+                                )
+                              ]),
                               decoration: PdfCustomDecoration(),
                               // decoration: PdfCustomDecorationNew(),
 
@@ -494,16 +715,16 @@ class _ReceiptState extends State<Receipt> {
                     //   isLoading = false;
                     // });
 
-                    await OpenFile.open(file.path);
+                    // await OpenFile.open(file.path);
 
-                    // Share.shareXFiles(
-                    //   [XFile(file.path)],
-                    //   text: 'Check (${DateTime.now()}',
-                    // );
+                    Share.shareXFiles(
+                      [XFile(file.path)],
+                      text: 'Check (${DateTime.now()}',
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFEAF6EF),
-                    fixedSize: const Size(150, 50),
+                    fixedSize: const Size(100, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
@@ -530,6 +751,7 @@ class _ReceiptState extends State<Receipt> {
 
 class ReceiptContainer extends StatelessWidget {
   final Widget? child;
+
   ReceiptContainer({Key? key, this.child}) : super(key: key);
 
   final screenshotController = ScreenshotController();
@@ -552,7 +774,7 @@ class ReceiptContainer extends StatelessWidget {
     );
   }
 
-  Widget emptyReceipt({required double height, required double width}){
+  Widget emptyReceipt({required double height, required double width}) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
@@ -573,12 +795,11 @@ class ReceiptContainer extends StatelessWidget {
     );
   }
 
-  Future<Uint8List> capture(BuildContext context, {required double height, required double width}) async{
-    // print('PIXELRATIO: ${MediaQuery.of(context).devicePixelRatio}');
+  Future<Uint8List> capture(BuildContext context, {required double height, required double width}) async {
     final Uint8List image = await screenshotController.captureFromWidget(
-        emptyReceipt(height: height, width: width),
+      emptyReceipt(height: height, width: width),
       delay: Duration.zero,
-      pixelRatio: 10,
+      pixelRatio: MediaQuery.of(context).devicePixelRatio + 2,
     );
     return image;
   }
